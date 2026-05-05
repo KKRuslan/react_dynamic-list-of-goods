@@ -5,19 +5,32 @@ import { GoodsList } from './GoodsList';
 import { getAll, get5First, getRedGoods } from './api/goods';
 import { Good } from './types/Good';
 
-export const App: React.FC = () => {
+// eslint-disable-next-line react/display-name
+export const App: React.FC = React.memo(() => {
   const [goods, setGoods] = useState<Good[]>([]);
 
   const getAllGoods = () => {
-    getAll().then(data => setGoods(data));
+    getAll()
+      .then(data => setGoods(data))
+      .catch(error => {
+        throw new Error('Error fetching all goods:' + error);
+      });
   };
 
   const getFiveFirstGoods = () => {
-    get5First().then(data => setGoods(data));
+    get5First()
+      .then(data => setGoods(data))
+      .catch(error => {
+        throw new Error('Error fetching first five goods:' + error);
+      });
   };
 
   const getOnlyRedGoods = () => {
-    getRedGoods().then(data => setGoods(data));
+    getRedGoods()
+      .then(data => setGoods(data))
+      .catch(error => {
+        throw new Error('Error fetching red goods:' + error);
+      });
   };
 
   return (
@@ -43,4 +56,4 @@ export const App: React.FC = () => {
       <GoodsList goods={goods} />
     </div>
   );
-};
+});
